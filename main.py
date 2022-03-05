@@ -1,7 +1,7 @@
 import os
 import shutil
 from datetime import datetime,date
-import pandas as pd
+# import pandas as pd
 from config import *
 
 def get_unique_list(lst:list):
@@ -73,15 +73,16 @@ class Backup:
                     destination_dir = fr'{self.destination_root_directory}\{self.destination_folder_name}'
                     filename, file_extension = os.path.splitext(source_file)
                     for folder in self.source_folder_names:
-                        if folder in dirpath and file_extension.lower() in self.media_extensions and get_modification_date(source_file) >= self.start_backup_date:
+                        if folder != '' and folder in dirpath and file_extension.lower() in self.media_extensions and get_modification_date(source_file) >= self.start_backup_date:
                             copy_to_dest(destination_dir, file, source_file)
+                print('Success')
 
     def backup_to_hdd():
         copytree_to_dest(hdd_directory, '_ALL BAO', source_folder_directory)
 
-Backup_Cameras = Backup(camera_folders, 'Camera')
+# Backup_Cameras = Backup(camera_folders, 'Camera')
 
-Backup_Screenshots = Backup(screenshot_folders, 'Screenshots')
+# Backup_Screenshots = Backup(screenshot_folders, 'Screenshots')
 
-Backup_HighQuality = Backup(high_quality_cameras, 'High Quality Camera')
+# Backup_HighQuality = Backup(highquality_folders, 'High Quality Camera')
 

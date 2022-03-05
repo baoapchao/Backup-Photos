@@ -7,11 +7,11 @@ destination_root_directory = r'F:\_BACKUP ALL PHOTOS\_ALL BAO'
 
 media_extensions = ['.jpg', '.png', '.mp4', '.gif', '.jpeg']
 
-camera_folders = ['Camera']
+# camera_folders = ['Camera']
 
 screenshot_folders = ['Screenshots']
 
-high_quality_cameras = ['Máy ảnh']
+highquality_folders = ['Máy ảnh']
 
 #backup to hdd
 source_folder_directory = r'F:\_BACKUP ALL PHOTOS\_ALL BAO'
