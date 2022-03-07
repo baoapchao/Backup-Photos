@@ -56,33 +56,31 @@ def get_folder_info(directory):
 
 class Backup:
     # def __init__(self, source_directory_root, media_extensions, camera_folder_names, destination_directory_root, start_backup_date):
-    def __init__(self, source_folder_names, destination_folder_name):
-        self.source_folder_names = source_folder_names
-        self.destination_folder_name = destination_folder_name
-    
-    source_root_directory = source_root_directory
-    media_extensions = media_extensions
-    destination_root_directory = destination_root_directory
-    start_backup_date = date(start_backup_date[0], start_backup_date[1], start_backup_date[2])
+    start_backup_date_actual = date(start_backup_date[0], start_backup_date[1], start_backup_date[2])
+    def __init__(self):
+        pass
+    def backup_all(lst_dir:list, destination_folder_name):  
+        global camera_folders 
+        global screenshot_folders
+        global highquality_folders
 
-    def backup_all(self):  
-        for dirpath, dirs, files in os.walk(source_root_directory):
-            if files != []:
-                for file in files:
-                    source_file = fr'{dirpath}\{file}'
-                    destination_dir = fr'{self.destination_root_directory}\{self.destination_folder_name}'
-                    filename, file_extension = os.path.splitext(source_file)
-                    for folder in self.source_folder_names:
-                        if folder != '' and folder in dirpath and file_extension.lower() in self.media_extensions and get_modification_date(source_file) >= self.start_backup_date:
-                            copy_to_dest(destination_dir, file, source_file)
-                print('Success')
+        for dir in lst_dir:
+            for dirpath, dirs, files in os.walk(dir):
+                if files != []:
+                    for file in files:
+                        source_file_dir = fr'{dirpath}\{file}'
+                        destination_dir = fr'{destination_root_directory}\{destination_folder_name}'
+                        filename, file_extension = os.path.splitext(source_file_dir)
+                        if file_extension.lower() in media_extensions and get_modification_date(source_file_dir) >= Backup.start_backup_date_actual:
+                            copy_to_dest(destination_dir, file, source_file_dir)
 
     def backup_to_hdd():
         copytree_to_dest(hdd_directory, '_ALL BAO', source_folder_directory)
 
-# Backup_Cameras = Backup(camera_folders, 'Camera')
+# Backup_Cameras = Backup('Camera')
 
-# Backup_Screenshots = Backup(screenshot_folders, 'Screenshots')
+# Backup_Screenshots = Backup('Screenshots')
 
-# Backup_HighQuality = Backup(highquality_folders, 'High Quality Camera')
+# Backup_HighQuality = Backup('High Quality Camera')
 
+# Backup.backup_all(['F:\_BACKUP ALL PHOTOS\Source\Camera'], 'Camera')

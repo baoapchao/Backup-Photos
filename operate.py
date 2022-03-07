@@ -1,6 +1,6 @@
 from main import *
 
-get_folder_info(source_root_directory)
+# get_folder_info()
 
 # Backup_Cameras.backup_all()
 
