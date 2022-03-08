@@ -4,67 +4,60 @@ from tkinter.filedialog import askdirectory
 from main import *
 from config import *
 
-
-
-camera_folders = []
-# screenshot_folders= []
-# highquality_folders = [] 
-
-backup_dict = {1 : {'name' : 'Camera', 'folders' : camera_folders} ,
-        2 : {'name' : 'Screenshots'} ,
-        3 : {'name' : 'High Quality Camera'} , 
-        4 : {'name' :'backup-hdd'}
-            }
-
+destination_dir = ''
+lst_source_dir = []
 
 window = tk.Tk()
 window.title("Backup Photos in Fashion!")
 window.geometry("800x600")
 
-class Text:
-    def __init__(self, rely):
-        self.text_variable = tk.StringVar()
-        self = tk.Label(textvariable = self.text_variable)
-        self.place(relx=0, rely=rely, relwidth=0.8, relheight=0.15)
-        # self.insert(tk.END, "Click browse to add folders")
-    def change_text(self, text):
-        self.text_variable.set(text)
+label1 = tk.Label(text= 'Choose source folders (You can browse many times)')
+label1.grid(row=1, column=1)
 
-camera_text = Text(0.05)
-# screenshot_text = Text(0.25)
-# highquality_text = Text(0.45)
+label2 = tk.Label(text= 'Choose destination folders')
+label2.grid(row=3, column=1)
 
+text_variable1 = tk.StringVar()
+label_selected_source_dirs = tk.Label(textvariable = text_variable1, bg = 'white', width = 50)
+label_selected_source_dirs.grid(row=2, column=2)
 
+text_variable2 = tk.StringVar()
+label_selected_dest_dirs = tk.Label(textvariable = text_variable2, bg = 'white', width = 50)
+label_selected_dest_dirs.grid(row=4, column=2)
 
-def browse_button_func(backup_id):
+def source_browse_button_func():
     folder = askdirectory(title="Choose Folder")
     if folder:
+        global lst_source_dir 
         folder = os.path.normpath(folder)
-        backup_dict[backup_id]['folders'].append(folder)
-        camera_text.change_text("\n".join(backup_dict[backup_id]['folders']))
+        lst_source_dir.append(folder)
+        text_variable1.set("\n".join(lst_source_dir))
 
-def backup_func(backup_id):
-    Backup.backup_all(backup_dict[backup_id]['folders'] , backup_dict[backup_id]['name'])
+def dest_browse_button_func():
+    folder = askdirectory(title="Choose Folder")
+    if folder:
+        global destination_dir
+        folder = os.path.normpath(folder)
+        destination_dir = folder
+        text_variable2.set(destination_dir)
 
-class Button_Browse:
-    def __init__(self, rely, backup_id):
-        self.rely = rely
-        self = tk.Button(window, text= 'Browse', command= lambda: browse_button_func(backup_id), height=2, width=15) 
-        self.place(relx=0.8, rely=rely, relwidth=0.2, relheight=0.15)
+def info_box():
+    tk.messagebox.showinfo(title='Folder Info', message = get_folder_info(destination_dir))
 
-class Button_Backup:
-    def __init__(self, relx, backup_id):
-        self = tk.Button(window, text='Backup ' + backup_dict[backup_id]['name'], command= lambda: backup_func(backup_id), height=1, width=15) 
-        self.place(relx=relx, rely=0.9, relwidth=0.2, relheight=0.1)
+button_source_browse = tk.Button(window, text= 'Browse', command= lambda: source_browse_button_func()) 
+button_source_browse.grid(row=2, column=1)
 
-camera_browse_button = Button_Browse(0.05, 1)
+button_dest_browse = tk.Button(window, text= 'Browse', command= lambda: dest_browse_button_func()) 
+button_dest_browse.grid(row=4, column=1)
 
-camera_backup_button = Button_Backup(0.025, 1)
-# screenshot_backup_button = Button_Backup(0.275)
-# highquality_backup_button = Button_Backup(0.525)
+button_get_info = tk.Button(window, text= 'Info', command= lambda: info_box()) 
+button_get_info.grid(row=4, column=3)
 
+button_backup = tk.Button(window, text='Backup', command= lambda: backup_all(lst_source_dir, destination_dir)) 
+button_backup.grid(row=5, column=3)
 
+button_tidy = tk.Button(window, text='Organize', command= lambda: tidy_folders(destination_dir)) 
+button_tidy.grid(row=6, column=3)
 
-# backup_hdd_button = Button_Backup(0.775)
-# execute_all_button = Button_Backup(0.775)
 window.mainloop()
+

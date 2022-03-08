@@ -27,11 +27,35 @@ def get_latest_modification_date(lst_date:list):
     return max_date_standardized
 
 def copy_to_dest(destination_directory, file, source_file_directory):
-    if os.path.exists(destination_directory):pass
+    year = datetime.strftime(get_modification_date(source_file_directory), '%Y')
+    month = datetime.strftime(get_modification_date(source_file_directory), '%m')
+    destination_divided_directory = f"{destination_directory}\{year}-{month.zfill(2)}"
+    if os.path.exists(destination_divided_directory):pass
     else:
-        os.makedirs(destination_directory)
-    destination = fr'{destination_directory}\{file}'
+        os.makedirs(destination_divided_directory)
+    destination = fr'{destination_divided_directory}\{file}'
     shutil.copy2(source_file_directory, destination) 
+
+def move_to_dest(destination_directory, file, source_file_directory):
+    year = datetime.strftime(get_modification_date(source_file_directory), '%Y')
+    month = datetime.strftime(get_modification_date(source_file_directory), '%m')
+    destination_divided_directory = f"{destination_directory}\{year}-{month.zfill(2)}"
+    if os.path.exists(destination_divided_directory):pass
+    else:
+        os.makedirs(destination_divided_directory)
+    destination = fr'{destination_divided_directory}\{file}'
+    shutil.move(source_file_directory, destination) 
+
+def tidy_folders(directory):
+    for dirpath, dirs, files in os.walk(directory):
+        if files != []:
+            for file in files:
+                source_file_dir = fr'{dirpath}\{file}'
+                # destination_dir = fr'{destination_root_directory}\{destination_folder_name}'
+                filename, file_extension = os.path.splitext(source_file_dir)
+                if file_extension.lower() in media_extensions and get_modification_date(source_file_dir) >= start_backup_date_actual:
+                    move_to_dest(directory, file, source_file_dir)
+
 
 def copytree_to_dest(hdd_directory, destination_folder_name, source_folder_directory):
     # if os.path.exists(destination_dir):pass
@@ -49,33 +73,29 @@ def get_folder_info(directory):
                 filename, file_extension = os.path.splitext(fr'{dirpath}\{file}')
                 lst_extensions.append(file_extension)
                 lst_dates.append(get_modification_date(fr'{dirpath}\{file}'))
-    print('FOLDER INFO')
-    print('List of extensions:\t', get_unique_list(extension.lower() for extension in lst_extensions))
-    print('Earliest modification date:\t', get_earliest_modification_date(lst_dates))
-    print('Latest modification date:\t', get_latest_modification_date(lst_dates))
+    info = f"""
+    List of extensions: 
+    {get_unique_list(extension.lower() for extension in lst_extensions)}\n
+    Earliest modification date: {get_earliest_modification_date(lst_dates)}\n
+    Latest modification date: {get_latest_modification_date(lst_dates)}
+    """
+    return info
 
-class Backup:
-    # def __init__(self, source_directory_root, media_extensions, camera_folder_names, destination_directory_root, start_backup_date):
-    start_backup_date_actual = date(start_backup_date[0], start_backup_date[1], start_backup_date[2])
-    def __init__(self):
-        pass
-    def backup_all(lst_dir:list, destination_folder_name):  
-        global camera_folders 
-        global screenshot_folders
-        global highquality_folders
+start_backup_date_actual = date(start_backup_date[0], start_backup_date[1], start_backup_date[2])
 
-        for dir in lst_dir:
-            for dirpath, dirs, files in os.walk(dir):
-                if files != []:
-                    for file in files:
-                        source_file_dir = fr'{dirpath}\{file}'
-                        destination_dir = fr'{destination_root_directory}\{destination_folder_name}'
-                        filename, file_extension = os.path.splitext(source_file_dir)
-                        if file_extension.lower() in media_extensions and get_modification_date(source_file_dir) >= Backup.start_backup_date_actual:
-                            copy_to_dest(destination_dir, file, source_file_dir)
+def backup_all(lst_source_dir, destination_dir):  
+    for dir in lst_source_dir:
+        for dirpath, dirs, files in os.walk(dir):
+            if files != []:
+                for file in files:
+                    source_file_dir = fr'{dirpath}\{file}'
+                    # destination_dir = fr'{destination_root_directory}\{destination_folder_name}'
+                    filename, file_extension = os.path.splitext(source_file_dir)
+                    if file_extension.lower() in media_extensions and get_modification_date(source_file_dir) >= start_backup_date_actual:
+                        copy_to_dest(destination_dir, file, source_file_dir)
 
-    def backup_to_hdd():
-        copytree_to_dest(hdd_directory, '_ALL BAO', source_folder_directory)
+def backup_to_hdd():
+    copytree_to_dest(hdd_directory, '_ALL BAO', source_folder_directory)
 
 # Backup_Cameras = Backup('Camera')
 
