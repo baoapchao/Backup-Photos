@@ -1,2 +1,2 @@
-if '' in 'abc':
-    print(True)
+import app
+print('Bug or not?')

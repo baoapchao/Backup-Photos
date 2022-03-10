@@ -1,8 +1,8 @@
-from re import L
 import tkinter as tk
 from tkinter.filedialog import askdirectory
 from main import *
 from config import *
+from tkinter import ttk
 
 destination_dir = ''
 lst_source_dir = []
@@ -10,6 +10,7 @@ lst_source_dir = []
 window = tk.Tk()
 window.title("Backup Photos in Fashion!")
 window.geometry("800x600")
+window.iconbitmap(bitmap='apple.ico')
 
 label1 = tk.Label(text= 'Choose source folders (You can browse many times)')
 label1.grid(row=1, column=1)
@@ -59,5 +60,9 @@ button_backup.grid(row=5, column=3)
 button_tidy = tk.Button(window, text='Organize', command= lambda: tidy_folders(destination_dir)) 
 button_tidy.grid(row=6, column=3)
 
-window.mainloop()
+# combobox = ttk.Combobox(window, values=['values 1', 'value 2'])
+# combobox.grid(row=7, column=3)
+
+if __name__ == '__main__':
+    window.mainloop()
 
