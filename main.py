@@ -6,6 +6,7 @@ from config import *
 
 def get_unique_list(lst:list):
     unique_list = list(dict.fromkeys(lst))
+    unique_list.sort()
     return unique_list
 
 def get_modification_date(filepath):
