@@ -19,32 +19,30 @@ def get_modification_date(filepath):
 
 def get_earliest_modification_date(lst_date:list):
     min_date = min(lst_date)
-    min_date_standardized = min_date.strftime('%D')
-    return min_date_standardized
+    return min_date.strftime('%D')
 
 def get_latest_modification_date(lst_date:list):
     max_date = max(lst_date)
-    max_date_standardized = max_date.strftime('%D')
-    return max_date_standardized
+    return max_date.strftime('%D')
 
 def copy_to_dest(destination_directory, file, source_file_directory):
     year = datetime.strftime(get_modification_date(source_file_directory), '%Y')
     month = datetime.strftime(get_modification_date(source_file_directory), '%m')
-    destination_divided_directory = os.path.join(destination_directory,year+month.zfill(2))
+    destination_divided_directory = os.path.join(destination_directory,year+'-'+month.zfill(2))
     if os.path.exists(destination_divided_directory):pass
     else:
         os.makedirs(destination_divided_directory)
-    destination = fr'{destination_divided_directory}\{file}'
+    destination = os.path.join(destination_divided_directory,file)
     shutil.copy2(source_file_directory, destination) 
 
 def move_to_dest(destination_directory, file, source_file_directory):
     year = datetime.strftime(get_modification_date(source_file_directory), '%Y')
     month = datetime.strftime(get_modification_date(source_file_directory), '%m')
-    destination_divided_directory = os.path.join(destination_directory,year+month.zfill(2))
+    destination_divided_directory = os.path.join(destination_directory,year+'-'+month.zfill(2))
     if os.path.exists(destination_divided_directory):pass
     else:
         os.makedirs(destination_divided_directory)
-    destination = fr'{destination_divided_directory}\{file}'
+    destination = os.path.join(destination_divided_directory,file)
     shutil.move(source_file_directory, destination) 
 
 def remove_empty_folders(directory):
