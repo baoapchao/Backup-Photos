@@ -10,6 +10,7 @@ lst_source_dir = []
 window = tk.Tk()
 window.title("Backup Photos in Fashion!")
 window.geometry("800x600")
+
 try:
     window.iconbitmap(bitmap='apple.ico')
 except:pass
@@ -21,11 +22,11 @@ label2 = tk.Label(text= 'Choose destination folders')
 label2.grid(row=3, column=1)
 
 text_variable1 = tk.StringVar()
-label_selected_source_dirs = tk.Label(textvariable = text_variable1, bg = 'white', width = 50)
+label_selected_source_dirs = tk.Label(textvariable = text_variable1, bg = 'white', fg = 'black', width = 50)
 label_selected_source_dirs.grid(row=2, column=2)
 
 text_variable2 = tk.StringVar()
-label_selected_dest_dirs = tk.Label(textvariable = text_variable2, bg = 'white', width = 50)
+label_selected_dest_dirs = tk.Label(textvariable = text_variable2, bg = 'white',fg = 'black', width = 50)
 label_selected_dest_dirs.grid(row=4, column=2)
 
 def source_browse_button_func():

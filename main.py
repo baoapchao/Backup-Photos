@@ -4,7 +4,7 @@ from datetime import datetime,date
 # import pandas as pd
 from config import *
 
-def get_unique_list(lst:list):
+def get_unique_list(lst):
     unique_list = list(dict.fromkeys(lst))
     unique_list.sort()
     return unique_list
@@ -17,11 +17,11 @@ def get_modification_date(filepath):
     day = exact_time.strftime('%d')
     return date(int(year), int(month), int(day))
 
-def get_earliest_modification_date(lst_date:list):
+def get_earliest_modification_date(lst_date):
     min_date = min(lst_date)
     return min_date.strftime('%D')
 
-def get_latest_modification_date(lst_date:list):
+def get_latest_modification_date(lst_date):
     max_date = max(lst_date)
     return max_date.strftime('%D')
 
@@ -78,13 +78,12 @@ def get_folder_info(directory):
                 filename, file_extension = os.path.splitext(filepath)
                 lst_extensions.append(file_extension)
                 lst_dates.append(get_modification_date(filepath))
-    info = f"""
-    List of extensions: 
-    {get_unique_list(extension.lower() for extension in lst_extensions)}\n
+    return f"""
+    List of extensions:\n
+    {','.join(get_unique_list(extension.lower() for extension in lst_extensions))}\n
     Earliest modification date: {get_earliest_modification_date(lst_dates)}\n
     Latest modification date: {get_latest_modification_date(lst_dates)}
     """
-    return info
 
 start_backup_date_actual = date(start_backup_date[0], start_backup_date[1], start_backup_date[2])
 
@@ -99,13 +98,5 @@ def backup_all(lst_source_dir, destination_dir):
                     if file_extension.lower() in media_extensions and get_modification_date(source_file_dir) >= start_backup_date_actual:
                         copy_to_dest(destination_dir, file, source_file_dir)
 
-def backup_to_hdd():
-    copytree_to_dest(hdd_directory, '_ALL BAO', source_folder_directory)
-
-# Backup_Cameras = Backup('Camera')
-
-# Backup_Screenshots = Backup('Screenshots')
-
-# Backup_HighQuality = Backup('High Quality Camera')
-
-# Backup.backup_all(['F:\_BACKUP ALL PHOTOS\Source\Camera'], 'Camera')
+# def backup_to_hdd():
+#     copytree_to_dest(hdd_directory, '_ALL BAO', source_folder_directory)
