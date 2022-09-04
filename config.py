@@ -1,7 +1,7 @@
 
-start_backup_date = [2018, 1, 1]
+# start_backup_date = [2018, 1, 1]
 
-media_extensions = ['.jpg', '.png', '.mp4', '.gif', '.jpeg', 'mkv']
+media_extensions = ['.jpg', '.png', '.mp4', '.gif', '.jpeg', '.mkv', '.heic', '.mov']
 
 #backup to hdd
 source_folder_directory = r'F:\_BACKUP ALL PHOTOS\_ALL BAO'

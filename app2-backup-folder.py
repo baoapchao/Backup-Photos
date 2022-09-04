@@ -6,7 +6,7 @@ from tkinter import ttk
 from tkcalendar import Calendar
 
 destination_dir = ''
-lst_source_dir = []
+source_dir = ''
 
 window = tk.Tk()
 window.title("Backup Photos in Fashion!")
@@ -18,14 +18,14 @@ except:pass
 
 # Add Calendar
 cal = Calendar(window, selectmode = 'day',
-               year = 2017, month = 1,
+               year = 2020, month = 1,
                day = 1)
 cal.grid(row=10, column=1)
 
-label1 = tk.Label(text= 'Choose source folders (You can browse many times)')
+label1 = tk.Label(text= 'Choose source folder')
 label1.grid(row=1, column=1)
 
-label2 = tk.Label(text= 'Choose destination folders')
+label2 = tk.Label(text= 'Choose destination folder')
 label2.grid(row=3, column=1)
 
 text_variable1 = tk.StringVar()
@@ -39,10 +39,10 @@ label_selected_dest_dirs.grid(row=4, column=2)
 def source_browse_button_func():
     folder = askdirectory(title="Choose Folder")
     if folder:
-        global lst_source_dir 
+        global source_dir 
         folder = os.path.normpath(folder)
-        lst_source_dir.append(folder)
-        text_variable1.set("\n".join(lst_source_dir))
+        source_dir =  folder
+        text_variable1.set(source_dir)
 
 def dest_browse_button_func():
     folder = askdirectory(title="Choose Folder")
@@ -53,9 +53,9 @@ def dest_browse_button_func():
         text_variable2.set(destination_dir)
 
 def reset_button_func():
-    global lst_source_dir
+    global source_dir
     global destination_dir
-    lst_source_dir = []
+    source_dir = ''
     destination_dir = ''
     text_variable1.set('')
     text_variable2.set('')
@@ -72,7 +72,7 @@ button_dest_browse.grid(row=4, column=1)
 button_get_info = tk.Button(window, text= 'Info', width = 10,  command= lambda: info_box()) 
 button_get_info.grid(row=4, column=3)
 
-button_backup = tk.Button(window, text='Backup', width = 10, command= lambda: backup_all(lst_source_dir, destination_dir, datetime.strptime(cal.get_date(), '%d/%m/%y').date())) 
+button_backup = tk.Button(window, text='Backup', width = 10, command= lambda: backup_all(get_incremental_directories(source_dir, datetime.strptime(cal.get_date(), '%d/%m/%y').date()), destination_dir, datetime.strptime(cal.get_date(), '%d/%m/%y').date())) 
 button_backup.grid(row=5, column=3)
 
 button_tidy = tk.Button(window, text='Organize', width = 10, command= lambda: tidy_folders(destination_dir)) 
