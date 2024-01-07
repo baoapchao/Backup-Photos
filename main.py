@@ -97,8 +97,6 @@ def incremental_backup_photo_to_dest(source_folderpath, destination_parent_folde
             for filename in files:
                 source_filepath = os.path.join(dirpath, filename)
                 source_filename_wo_ext, source_file_ext = os.path.splitext(filename)
-                print(source_filepath)
-                print(get_modification_date(source_filepath))
                 if source_file_ext.lower() not in media_extensions or (get_modification_date(source_filepath) < latest_modification_date and incremental_boolean == 1):
                     pass
                 else:
@@ -114,4 +112,15 @@ def tidy_folders(folderpath):
                 source_filename_wo_ext, source_file_ext = os.path.splitext(filename)
                 if source_file_ext.lower() in media_extensions:
                     move_to_formatted_folderpath(source_filepath, destination_parent_folderpath)
+    remove_empty_folders(folderpath)
+
+def untidy_folders(folderpath):
+    for dirpath, dirs, files in os.walk(folderpath):
+        destination_folderpath = folderpath
+        if files != []:
+            for filename in files:
+                source_filepath = os.path.join(dirpath, filename)
+                source_filename_wo_ext, source_file_ext = os.path.splitext(filename)
+                if source_file_ext.lower() in media_extensions:
+                    move_to_dest(source_filepath, destination_folderpath)
     remove_empty_folders(folderpath)
