@@ -15,6 +15,7 @@ For example: If the folder name format is set to be '%Y-%m', the media files tha
 ### Example folder structure 
 The subfolders contain media files, such as images and videos, organized by month and year (`%Y-%m' date format):
 
+```
 /Media  
     /2022-01  
         image1.jpg  
@@ -33,3 +34,4 @@ The subfolders contain media files, such as images and videos, organized by mont
         image1.jpg  
         image2.png  
         video1.mp4  
+```
