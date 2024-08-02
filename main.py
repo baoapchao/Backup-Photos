@@ -55,13 +55,13 @@ def move_to_dest(source_filepath, destination_folderpath):
     destination_filepath = os.path.join(destination_folderpath, source_filename)
     shutil.move(source_filepath, destination_filepath)
 
-def copy_to_formatted_folderpath(source_filepath, destination_parent_folderpath):
-    destination_foldername = datetime.strftime(get_modification_date(source_filepath), backup_foldername_format)
+def copy_to_formatted_folderpath(source_filepath, destination_parent_folderpath, backup_date_format):
+    destination_foldername = datetime.strftime(get_modification_date(source_filepath), backup_date_format)
     destination_folderpath = os.path.join(destination_parent_folderpath, destination_foldername)
     copy_to_dest(source_filepath, destination_folderpath)
 
-def move_to_formatted_folderpath(source_filepath, destination_parent_folderpath):
-    destination_foldername = datetime.strftime(get_modification_date(source_filepath), backup_foldername_format)
+def move_to_formatted_folderpath(source_filepath, destination_parent_folderpath, backup_date_format):
+    destination_foldername = datetime.strftime(get_modification_date(source_filepath), backup_date_format)
     destination_folderpath = os.path.join(destination_parent_folderpath, destination_foldername)
     move_to_dest(source_filepath, destination_folderpath)
 
@@ -90,7 +90,7 @@ def print_folder_info(folderpath):
     Latest modification date: {latest_modification_date}
     """
 
-def incremental_backup_photo_to_dest(source_folderpath, destination_parent_folderpath, incremental_boolean):
+def incremental_backup_photo_to_dest(source_folderpath, destination_parent_folderpath, incremental_boolean, backup_date_format):
     lst_extension, latest_modification_date, earliest_modification_date = get_folder_info(destination_parent_folderpath)
     for dirpath, dirs, files in os.walk(source_folderpath):
         if files != []:
@@ -100,10 +100,10 @@ def incremental_backup_photo_to_dest(source_folderpath, destination_parent_folde
                 if source_file_ext.lower() not in media_extensions or (get_modification_date(source_filepath) < latest_modification_date and incremental_boolean == 1):
                     pass
                 else:
-                    copy_to_formatted_folderpath(source_filepath, destination_parent_folderpath)
+                    copy_to_formatted_folderpath(source_filepath, destination_parent_folderpath, backup_date_format)
 
 
-def tidy_folders(folderpath):
+def tidy_folders(folderpath, backup_date_format):
     for dirpath, dirs, files in os.walk(folderpath):
         destination_parent_folderpath = folderpath
         if files != []:
@@ -111,7 +111,7 @@ def tidy_folders(folderpath):
                 source_filepath = os.path.join(dirpath, filename)
                 source_filename_wo_ext, source_file_ext = os.path.splitext(filename)
                 if source_file_ext.lower() in media_extensions:
-                    move_to_formatted_folderpath(source_filepath, destination_parent_folderpath)
+                    move_to_formatted_folderpath(source_filepath, destination_parent_folderpath, backup_date_format)
     remove_empty_folders(folderpath)
 
 def untidy_folders(folderpath):
